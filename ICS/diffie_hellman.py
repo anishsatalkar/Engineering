@@ -17,21 +17,21 @@ class User:
         self.secret_key = (self.other_users_key ** self.secret_int) % p
 
 
-Ramesh = User(0, 0, 0, 0)
-Suresh = User(0, 0, 0, 0)
+Michael = User(0, 0, 0, 0)
+Dwight = User(0, 0, 0, 0)
 
-Ramesh.secret_int = 5
-Suresh.secret_int = 3
+Michael.secret_int = 5
+Dwight.secret_int = 3
 
-Ramesh.calculate_public_key()
-Suresh.other_users_key = Ramesh.public_key
+Michael.calculate_public_key()
+Dwight.other_users_key = Michael.public_key
 
-Suresh.calculate_public_key()
-Ramesh.other_users_key = Suresh.public_key
+Dwight.calculate_public_key()
+Michael.other_users_key = Dwight.public_key
 
-Ramesh.calculate_secret_key()
+Michael.calculate_secret_key()
 
-Suresh.calculate_secret_key()
+Dwight.calculate_secret_key()
 
-print(Ramesh.secret_key)
-print(Suresh.secret_key)
+print(Michael.secret_key)
+print(Dwight.secret_key)

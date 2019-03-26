@@ -45,7 +45,7 @@ def encrypt(plain_t, key1, key2):
 
     print('hf1 : {}, hf2 : {}'.format(hf1, hf2))
 
-    hf2 = expand_and_permute(EP8, [1, 0, 0, 0])
+    hf2 = expand_and_permute(EP8, hf2)
     print('expanded hf1 = ', hf2)
 
 
