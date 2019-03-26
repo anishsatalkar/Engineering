@@ -1,3 +1,5 @@
+# warning : still under progress.
+
 key = [1, 0, 1, 0, 0, 0, 0, 0, 1, 0]
 
 P10 = [3, 5, 2, 7, 4, 10, 1, 9, 8, 6]
