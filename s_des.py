@@ -22,6 +22,7 @@ def permute(p_box, in_key):
         permuted.append(in_key[p_box[i] - 1])
     return permuted
 
+
 def expand_and_permute(ep_box, in_key):
     len_ep_box = len(ep_box)
     expanded = []
@@ -29,6 +30,7 @@ def expand_and_permute(ep_box, in_key):
         expanded.append(in_key[ep_box[i] - 1])
 
     return expanded
+
 
 def encrypt(plain_t, key1, key2):
     P8_box = [2, 6, 3, 1, 4, 8, 5, 7]
@@ -41,8 +43,8 @@ def encrypt(plain_t, key1, key2):
 
     print('hf1 : {}, hf2 : {}'.format(hf1, hf2))
 
-    hf2 = expand_and_permute(EP8 , [1,0,0,0])
-    print('expanded hf1 = ' , hf2)
+    hf2 = expand_and_permute(EP8, [1, 0, 0, 0])
+    print('expanded hf1 = ', hf2)
 
 
 # Initial permutation using P10 box
