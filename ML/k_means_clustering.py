@@ -7,7 +7,7 @@ points = [[0.1, 0.6], [0.15, 0.71], [0.08, 0.9],
 
 X = np.array(points)
 
-init_clusters = np.ndarray(shape=(2, 2), dtype=float, buffer=np.array([[0.1, 0.6], [0.3, 0.2]]))
+init_clusters = np.ndarray(shape=(2, 2), dtype=float, buffer=np.array([points[0], points[7]]))
 
 kmeans = KMeans(init=init_clusters, n_clusters=2, random_state=0).fit(X)
 
