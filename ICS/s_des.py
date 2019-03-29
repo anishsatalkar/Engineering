@@ -1,3 +1,4 @@
+#Encryption done. Decryption under progress
 
 key = [1, 0, 1, 0, 0, 0, 0, 0, 1, 0]
 
@@ -16,8 +17,6 @@ S_Box_1 = [['00', '01', '10', '11'],
            ['10', '00', '01', '11'],
            ['11', '00', '01', '11'],
            ['10', '01', '00', '11']]
-
-
 
 P4 = [2, 4, 3, 1]
 
@@ -89,21 +88,73 @@ def encrypt_round(plain_t, key_in):
     col_hf2 = str(hf2[1]) + str(hf2[2])
     S1 = (int(row_hf2, 2), int(col_hf2, 2))
 
+    print('S0 : {} -- S1 : {}'.format(S0, S1))
+
+    S0S1 = S_Box_0[S0[0]][S0[1]] + S_Box_1[S1[0]][S1[1]]
+    S0S1 = [int(x) for x in S0S1]
+    print('S0S1 : ',S0S1)
+
+    permute_S0S1 = permute(P4, S0S1)
+    print('permuted S0S1 with P4 : ',permute_S0S1)
+
+    xor_permute_S0S1 = xor(permute_S0S1, copy_hf1)
+    print('XOR Permute P4 S0S1',xor_permute_S0S1)
+
+    final_out = copy_hf2 + [x for x in xor_permute_S0S1]
+    print('combine 2nd half part with prev result : ',final_out)
+    return final_out
+
+
+def decrypt(cipher_text, key_2):
+    P8_box = [2, 6, 3, 1, 4, 8, 5, 7]
+    plain_t = permute(P8_box, cipher_text)
+
+    print('permuted decrypt  : ', plain_t)
+
+    hf1 = plain_t[:len(plain_t) // 2]
+    copy_hf1 = [x for x in hf1]
+    hf2 = plain_t[len(plain_t) // 2:]
+    copy_hf2 = [x for x in hf2]
+
+    print('hf1 : {}, hf2 : {}'.format(hf1, hf2))
+
+    hf2 = expand_and_permute(EP8, hf2)
+    print('expanded hf2 = ', hf2)
+
+    # XOR hf2 with Key_2
+
+    xor_val = xor(hf2, key_2)
+    print('xor_val : ', xor_val)
+
+    hf1 = xor_val[:len(xor_val) // 2]
+    hf2 = xor_val[len(xor_val) // 2:]
+
+    print('xor stuff : ', hf1, ' ', hf2)
+
+    row_hf1 = str(hf1[0]) + str(hf1[3])
+    col_hf1 = str(hf1[1]) + str(hf1[2])
+    S0 = (int(row_hf1, 2), int(col_hf1, 2))
+
+    row_hf2 = str(hf2[0]) + str(hf2[3])
+    col_hf2 = str(hf2[1]) + str(hf2[2])
+    S1 = (int(row_hf2, 2), int(col_hf2, 2))
+
     print(S0, S1)
 
     S0S1 = S_Box_0[S0[0]][S0[1]] + S_Box_1[S1[0]][S1[1]]
     S0S1 = [int(x) for x in S0S1]
-    print(S0S1)
+    print('decrypt S0S1: ', S0S1)
 
-    permute_S0S1 = permute(P4,S0S1)
+    permute_S0S1 = permute(P4, S0S1)
+    #
+    xor_permute_S0S1 = xor(permute_S0S1, copy_hf1)
+    print('P4 S0S1 XOR : ', xor_permute_S0S1)
+    #
+    # final_out = copy_hf2 + [x for x in xor_permute_S0S1]
+    # print(final_out)
+    #
+    # return final_out
 
-    xor_permute_S0S1 = xor(permute_S0S1,copy_hf1)
-    print(xor_permute_S0S1)
-
-    final_out = copy_hf2 + [x for x in xor_permute_S0S1]
-    print(final_out)
-
-    return final_out
 
 if __name__ == '__main__':
     # Initial permutation using P10 box
@@ -134,13 +185,16 @@ if __name__ == '__main__':
 
     # Applying permutation on this combined key using P8 box to get the second key
     key_2 = permute(P8, key_shifted_2)
-    print('Key 2 : ' , key_2)
+    # print('Key 2 : ', key_2)
 
     # ------Encryption starts------
-    plain_text = [0, 1, 1, 1, 0, 0, 1, 0]
+    # plain_text = [0, 1, 1, 1, 0, 0, 1, 0]
+    plain_text = [0, 1, 1, 0, 1, 1, 0, 1]
 
-    round_1_output = encrypt_round(plain_text, key_1)
+    round_1_output = encrypt_round(plain_text, key_in=[1, 0, 1, 0, 0, 1, 0, 0])
+    #
+    round_2_output = encrypt_round(round_1_output, key_in=[0, 1, 0, 0, 0, 0, 1, 1])
+    #
+    print('Final cipher_text : ', round_2_output)
 
-    round_2_output = encrypt_round(round_1_output,key_2)
-
-    print('Final cipher_text : ' , round_2_output)
+    # decrypt([0, 1, 0, 0, 0, 1, 1, 0], key_2)
