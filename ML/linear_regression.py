@@ -1,4 +1,6 @@
 import statistics
+import matplotlib.pyplot as plt
+import numpy as np
 
 hours_spent_driving_x = [10, 9, 2, 15, 10, 16, 11, 16]
 risk_score_y = [95, 80, 10, 50, 45, 98, 38, 93]
@@ -24,6 +26,13 @@ def predict(hours):
     return (m * hours) + c
 
 
-print(m)
-print(c)
-print(predict(10))
+print('slope(m): ', m)
+print('intercept(c): ', c)
+print('prediction(y) : ', predict(16))
+
+plt.scatter(x=hours_spent_driving_x, y=risk_score_y)
+
+x1 = np.linspace(0, 20)
+y1 = m * x1 + c
+plt.plot(x1, y1)
+plt.show()
