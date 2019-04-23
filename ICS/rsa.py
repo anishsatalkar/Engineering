@@ -1,11 +1,11 @@
-def phi(a_num, b_num):
-    return (a_num - 1) * (b_num - 1)
+def phi(a, b):
+    return (a - 1) * (b - 1)
 
 
-def gcd(a_num, b_num):
-    if b_num == 0:
-        return a_num
-    return int(gcd(b_num, a_num % b_num))
+def gcd(a, b):
+    if b == 0:
+        return a
+    return int(gcd(b, a % b))
 
 
 def is_int(num):
@@ -15,20 +15,20 @@ def is_int(num):
         return False
 
 
-def calculate_d_values(p, e_num, iter):
-    return ((p * iter) + 1) / e_num
+def calculate_d_value(phi_n, e, i):
+    return ((phi_n * i) + 1) / e
 
 
-def encrypt(plain_t, n_num):
-    return (plain_t ** public_key['e']) % n_num
+def encrypt(plain_t, n):
+    return (plain_t ** public_key['e']) % n
 
 
-def decrypt(cipher_t, n_num):
-    return (cipher_t ** private_key['d']) % n_num
+def decrypt(cipher_t, n):
+    return (cipher_t ** private_key['d']) % n
 
 
-a = 13
-b = 11
+a = 11
+b = 13
 
 n = a * b
 
@@ -38,12 +38,13 @@ e = 2
 while gcd(e, phi_n) != 1 and e < phi_n:
     e += 1
 
+print('e: ', e)
 i = 1
 
-d = calculate_d_values(phi_n, e, i)
+d = calculate_d_value(phi_n, e, i)
 while not is_int(d):
     i += 1
-    d = calculate_d_values(phi_n, e, i)
+    d = calculate_d_value(phi_n, e, i)
 
 public_key = {
     'e': int(e),
@@ -56,8 +57,8 @@ private_key = {
 }
 
 plain_text = 13
-
+print('Plaintext : ',plain_text)
 cipher_text = encrypt(plain_text, n)
-print(cipher_text)
+print('After encryption, cipertext : ', cipher_text)
 
-print(decrypt(cipher_text, n))
+print('After decryption, plaintext : ', decrypt(cipher_text, n))
